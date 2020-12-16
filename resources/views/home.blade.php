@@ -8,6 +8,8 @@
                 <th>Name</th>
                 <th>Phones</th>
                 <th>Emails</th>
+                <th>Control</th>
+
             </tr>
             @foreach($contacts as $contact)
                 <tr>
@@ -26,6 +28,11 @@
                                 {{ $email->name ?? '' }}
                             </div>
                         @endforeach
+                    </td>
+                    <td>
+                        <a href="{{ route('contact.show',[$contact]) }}" class="btn btn-sm btn-primary ml-3">Show</a>
+                        <a href="{{ route('contact.edit',[$contact]) }}" class="btn btn-sm ml-3 btn-secondary">Update</a>
+                        <a href="{{ route('contact.destroy',[$contact]) }}" class="btn btn-sm btn-danger ml-3">Delete</a>
                     </td>
                 </tr>
             @endforeach
