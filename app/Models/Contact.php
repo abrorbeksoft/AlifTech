@@ -8,4 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     use HasFactory;
+    protected $guarded=[];
+
+    public function emails()
+    {
+        return $this->hasMany(Email::class,'contact_id','id');
+    }
+
+    public function numbers()
+    {
+        return $this->hasMany(Number::class,'contact_id','id');
+    }
+
+    public function getNameAttribute($value)
+    {
+        return ($this->active)?$value:'';
+    }
 }
