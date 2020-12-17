@@ -2,8 +2,10 @@
 
 @section('content')
     <div class="container">
-        <div class="my-3">
-            <a class="btn btn-primary" href="{{ route('contact.create') }}">Add Contact</a>
+        <div class="col-md-10 mx-auto">
+            <div class="my-3">
+                <a class="btn btn-primary" href="{{ route('contact.create') }}">Add Contact</a>
+            </div>
         </div>
         @foreach($contacts as $contact)
             <div class="col-md-10 mt-3 shadow  mx-auto">
@@ -58,7 +60,10 @@
                 </div>
             </div>
         @endforeach
+        <div class="col-md-10 mx-auto">
+            {{ $contacts->links() }}
 
+        </div>
     </div>
 @endsection
 

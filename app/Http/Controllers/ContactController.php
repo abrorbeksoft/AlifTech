@@ -40,45 +40,18 @@ class ContactController extends Controller
     {
         $request->validate([
             'name'=>'required|string|min:4|max:150',
-            'image'=>'file',
             'phone'=>'string',
             'email' => 'email:rfc,dns'
         ]);
-        $path='';
-        $newcontact=null;
-        if (!isNull($request->file('image')))
-        {
+        $path=null;
+        if ($request->file('image'))
             $path=$request->file('image')->store('images');
-        }
+
+        $resp=$this->storeContact($request->name,$path,$request->phone,$request->email);
+        if (count($resp)==0)
+            return redirect()->route('home');
         else
-        {
-            $path='images/noimage.png';
-        }
-        $contact=Contact::where('name',$request->name)->first();
-
-        if (isset($contact) && $contact->active==true)
-        {
-            return redirect()->back()->withErrors(['name'=>'Bunday kontakt mavjud']);
-        }
-        elseif (isset($contact) && $contact->active==false)
-        {
-            $contact->name=$request->name;
-            $contact->active=true;
-            $contact->update();
-
-
-
-        }
-        else
-        {
-            $newcontact=new Contact();
-            $newcontact->name=$request->name;
-            $newcontact->active=true;
-            $newcontact->user_id=1;
-            $newcontact->save();
-        }
-
-
+            return redirect()->back()->withErrors($resp);
 
     }
 
@@ -117,7 +90,7 @@ class ContactController extends Controller
             'name'=>'required|string|min:4|max:50'
         ]);
         $this->updateName($contact,$request->name);
-        
+
         return redirect()->back();
 
     }

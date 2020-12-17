@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <div class="col-md-8 mx-auto">
-            <form action="{{ route('contact.store') }}" enctype="multipart/form-data">
+            <form action="{{ route('contact.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
                 <div class="my-3 row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Image</label>
                     <div class="col-sm-10">
@@ -44,5 +45,6 @@
 
             </form>
         </div>
+
     </div>
 @endsection

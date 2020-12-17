@@ -11,6 +11,63 @@ use App\Models\Number;
 
 trait Helper
 {
+    protected function storeContact($name,$image=null,$phone=null,$email=null)
+    {
+
+        $contact=Contact::where('name',$name)->first();
+        if (isset($contact) && $contact->active==true )
+        {
+            return ['name'=>'Bunday foydalanuvchi mavjud'];
+        }
+        elseif (isset($contact) && $contact->active==false)
+        {
+            $contact->active=true;
+            $contact->update();
+            return $this->createEmailAndNumber($contact,$image,$phone,$email);
+        }
+        else
+        {
+            $temp=new Contact();
+            $temp->name=$name;
+            $temp->active=true;
+            $temp->user_id=1;
+            $temp->save();
+
+            return $this->createEmailAndNumber($temp,$image,$phone,$email);
+
+        }
+
+
+
+    }
+    protected function createEmailAndNumber(Contact $contact,$image,$phone,$email)
+    {
+        $fullresp=[];
+        if ($image!=null)
+        {
+            $this->storeImage($contact,$image);
+        }
+        else
+        {
+            $this->storeImage($contact,'images/noimage.png');
+        }
+
+        if ($phone!=null)
+        {
+            $varNumber=Number::where('name',$phone)->first();
+            $resp=$this->storeNumber($varNumber,$phone,$contact->id);
+            array_merge($fullresp,$resp);
+        }
+
+        if ($email!=null)
+        {
+            $varEmail=Number::where('name',$email)->first();
+            $resp=$this->storeEmail($varEmail,$email,$contact->id);
+            array_merge($fullresp,$resp);
+        }
+        return $fullresp;
+    }
+
     protected function storeImage(Contact $contact,$path)
     {
         if (isset($contact->image))
