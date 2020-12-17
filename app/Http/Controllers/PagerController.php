@@ -10,7 +10,7 @@ class PagerController extends Controller
     public function index()
     {
         $user=User::find(1);
-        $contacts=$user->contacts()->where('active',1)->orderBy('created_at','desc')->get();
+        $contacts=$user->contacts()->where('active',1)->orderBy('created_at','desc')->paginate(15);
         return view('home',['contacts'=>$contacts]);
     }
 }
