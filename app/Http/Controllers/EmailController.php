@@ -9,6 +9,9 @@ use phpDocumentor\Reflection\Element;
 
 class EmailController extends Controller
 {
+
+    use Helper;
+
     /**
      * Display a listing of the resource.
      *
@@ -45,43 +48,9 @@ class EmailController extends Controller
         $email=$request->email;
         $check=Email::where('name',$email)->first();
 
-        if(isset($check) && $check->active==1)
-        {
-            return redirect()->back()->withErrors(['email'=>'Bunday email foydalnuvchisi mavjud']);
-        }
-        else if (isset($check) && $check->active==0 )
-        {
-            $check->name=$email;
-            $check->active=true;
-            $check->contact_id=$id;
-            $check->save();
-            return redirect()->back();
-        }
-        else
-        {
-            $temp=Email::where('active',false)->first();
-            if ($temp==null)
-            {
-                $create=new Email();
-                $create->name=$email;
-                $create->contact_id=$id;
-                $create->active=true;
-                $create->save();
-                return redirect()->back();
+        $resp=$this->storeEmail($check,$email,$id);
 
-            }
-            else
-            {
-                $temp->name=$email;
-                $temp->active=true;
-                $temp->contact_id=$id;
-                $temp->update();
-                return redirect()->back();
-
-            }
-
-        }
-
+        return redirect()->back()->withErrors($resp);
 
     }
 

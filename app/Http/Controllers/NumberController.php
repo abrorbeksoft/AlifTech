@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class NumberController extends Controller
 {
+
+    use Helper;
+
     /**
      * Display a listing of the resource.
      *
@@ -45,42 +48,8 @@ class NumberController extends Controller
         $number=$request->number;
         $check=Number::where('name',$number)->first();
 
-        if(isset($check) && $check->active==1)
-        {
-            return redirect()->back()->withErrors(['number'=>'Bunday raqam ishlatilmoqda']);
-        }
-        else if (isset($check) && $check->active==0 )
-        {
-            $check->name=$number;
-            $check->active=true;
-            $check->contact_id=$id;
-            $check->update();
-            return redirect()->back();
-        }
-        else
-        {
-            $temp=Number::where('active',false)->first();
-            if ($temp==null)
-            {
-                $create=new Number();
-                $create->name=$number;
-                $create->contact_id=$id;
-                $create->active=true;
-                $create->save();
-                return redirect()->back();
-
-            }
-            else
-            {
-                $temp->name=$number;
-                $temp->active=true;
-                $temp->contact_id=$id;
-                $temp->update();
-                return redirect()->back();
-
-            }
-
-        }
+        $resp=$this->storeNumber($check,$number,$id);
+        return redirect()->back()->withErrors($resp);
     }
 
     /**

@@ -9,6 +9,7 @@ use function PHPUnit\Framework\isNull;
 
 class ContactController extends Controller
 {
+    use Helper;
     /**
      * Display a listing of the resource.
      *
@@ -115,10 +116,8 @@ class ContactController extends Controller
         $request->validate([
             'name'=>'required|string|min:4|max:50'
         ]);
-
-        $contact->name=$request->name;
-        $contact->update();
-
+        $this->updateName($contact,$request->name);
+        
         return redirect()->back();
 
     }

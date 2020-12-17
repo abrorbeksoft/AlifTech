@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
+    use Helper;
+
     /**
      * Display a listing of the resource.
      *
@@ -77,30 +79,7 @@ class ImageController extends Controller
         $contact=Contact::find($id);
         $path=$request->file('image')->store('images');
 
-        if (isset($contact->image))
-        {
-            $contact->image->name=$path;
-            $contact->image->update();
-        }
-        else
-        {
-            $image=Image::where('active',0)->first();
-            if (isset($image))
-            {
-                $image->name=$path;
-                $image->active=true;
-                $image->imageable_id=$contact->id;
-                $image->upadate();
-            }
-            else
-            {
-                $contact->image()->create([
-                    'name'=>$path,
-                    'active'=>true
-                ]);
-            }
-
-        }
+        $this->storeImage($contact,$path);
 
         return  redirect()->back();
 
