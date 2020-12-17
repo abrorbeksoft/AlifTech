@@ -13,5 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\PagerController::class,'index']);
+Route::get('/', [\App\Http\Controllers\PagerController::class,'index'])->name('home');
 Route::resource('contact',\App\Http\Controllers\ContactController::class);
+Route::resource('number',\App\Http\Controllers\NumberController::class);
+Route::resource('email',\App\Http\Controllers\EmailController::class);
+Route::resource('image',\App\Http\Controllers\ImageController::class);
+

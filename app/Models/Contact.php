@@ -24,4 +24,10 @@ class Contact extends Model
     {
         return ($this->active)?$value:'';
     }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class,'imageable');
+    }
+
 }
