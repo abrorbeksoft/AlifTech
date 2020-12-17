@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('name',[\App\Http\Controllers\Api\SearchController::class,'searchByName']);
+Route::get('number',[\App\Http\Controllers\Api\SearchController::class,'searchByNumber']);
+Route::get('email',[\App\Http\Controllers\Api\SearchController::class,'searchByEmail']);
+
