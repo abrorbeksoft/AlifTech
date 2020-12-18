@@ -27,13 +27,25 @@ trait Helper
         }
         else
         {
-            $temp=new Contact();
-            $temp->name=$name;
-            $temp->active=true;
-            $temp->user_id=1;
-            $temp->save();
+            $contact=Contact::where('active',false)->first();
+            if (isset($contact))
+            {
+                $contact->name=$name;
+                $contact->active=true;
+                $contact->update();
+                return $this->createEmailAndNumber($contact,$image,$phone,$email);
 
-            return $this->createEmailAndNumber($temp,$image,$phone,$email);
+            }
+            else
+            {
+                $temp=new Contact();
+                $temp->name=$name;
+                $temp->active=true;
+                $temp->user_id=1;
+                $temp->save();
+
+                return $this->createEmailAndNumber($temp,$image,$phone,$email);
+            }
 
         }
 

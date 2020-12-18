@@ -16,7 +16,7 @@ class ImageResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>env('domain').'storage/'.$this->when($this->active==true,$this->name)
+            'name'=>env('APP_URL').'storage/'.$this->when($this->active==true,$this->name,'')
         ];
     }
 }

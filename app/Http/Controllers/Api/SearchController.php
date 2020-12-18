@@ -13,8 +13,8 @@ class SearchController extends Controller
     public $query=null;
     public function searchByName(Request $request)
     {
-        $q=$request->q;
-        $contacts=Contact::where([['name','like','%'.$q.'%'],['active','=',true]])->get();
+        $this->query=$request->q;
+        $contacts=Contact::where([['name','like','%'.$this->query.'%'],['active','=',true]])->get();
         return response()->json(ContactResource::collection($contacts));
 
     }
@@ -24,7 +24,7 @@ class SearchController extends Controller
         $this->query=$request->q;
         $contact=Contact::whereHas('numbers',function (Builder $builder){
             $builder->where('name','like','%'.$this->query.'%');
-            $builder->where('active',true);
+            $builder->where('active','=',true);
         })->get();
         return response()->json(ContactResource::collection($contact));
 
@@ -35,7 +35,7 @@ class SearchController extends Controller
         $this->query=$request->q;
         $contact=Contact::whereHas('emails',function (Builder $builder){
             $builder->where('name','like','%'.$this->query.'%');
-            $builder->where('active',true);
+            $builder->where('active','=',true);
 
         })->get();
         return response()->json(ContactResource::collection($contact));

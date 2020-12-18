@@ -57,7 +57,7 @@ class ContactController extends Controller
 
         $resp=$this->storeContact($request->name,$path,$request->number,$request->email);
 
-        if (count($resp)==0)
+        if (count($resp)>0)
             return redirect()->route('home');
         else
             return redirect()->back()->withErrors($resp);
