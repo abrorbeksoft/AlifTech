@@ -87,7 +87,7 @@
         inputname.addEventListener('input',async function (){
             if (inputname.value!='')
                 await axios.get(`api/name?q=${inputname.value}`).then(({data})=>{
-                    console.log(data);
+                    // console.log(data);
                     if (data.length>0) pushElem(data)
                 })
         })
@@ -103,7 +103,7 @@
 
             if (inputnumber.value!='')
                await axios.get(`api/number?q=${inputnumber.value}`).then(({data})=>{
-                   console.log(data);
+                   // console.log(data);
 
                    if (data.length>0) pushElem(data)
                 })
