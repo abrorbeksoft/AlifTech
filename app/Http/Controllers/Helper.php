@@ -56,14 +56,14 @@ trait Helper
         {
             $varNumber=Number::where('name',$phone)->first();
             $resp=$this->storeNumber($varNumber,$phone,$contact->id);
-            array_merge($fullresp,$resp);
+            $fullresp=array_merge($fullresp,$resp);
         }
 
         if ($email!=null)
         {
-            $varEmail=Number::where('name',$email)->first();
+            $varEmail=Email::where('name',$email)->first();
             $resp=$this->storeEmail($varEmail,$email,$contact->id);
-            array_merge($fullresp,$resp);
+            $fullresp=array_merge($fullresp,$resp);
         }
         return $fullresp;
     }
@@ -104,16 +104,16 @@ trait Helper
     }
     protected function storeEmail(Email $check=null,$email,$id)
     {
-        if(isset($check) && $check->active==1)
+        if(isset($check) && $check->active==true)
         {
             return ['email'=>'Bunday email foydalnuvchisi mavjud'];
         }
-        else if (isset($check) && $check->active==0 )
+        else if (isset($check) && $check->active==false )
         {
             $check->name=$email;
             $check->active=true;
             $check->contact_id=$id;
-            $check->save();
+            $check->update();
             return ['email'=>''];
         }
         else
@@ -143,11 +143,11 @@ trait Helper
     protected function storeNumber(Number $check=null,$number,$id)
     {
 
-        if(isset($check) && $check->active==1)
+        if(isset($check) && $check->active==true)
         {
             return ['number'=>'Bunday raqam ishlatilmoqda'];
         }
-        else if (isset($check) && $check->active==0 )
+        else if (isset($check) && $check->active==false)
         {
             $check->name=$number;
             $check->active=true;

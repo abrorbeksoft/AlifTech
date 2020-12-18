@@ -26,8 +26,8 @@
                 <div class="my-3 row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Phone</label>
                     <div class="col-sm-10">
-                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" id="inputPassword">
-                        @error('phone')
+                        <input type="text" name="number" class="form-control @error('number') is-invalid @enderror" id="inputPassword">
+                        @error('number')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

@@ -55,9 +55,6 @@
                             <a style="cursor: pointer" onclick="submitForm({{ $contact->id }})"  class="p-1 text-decoration-none  bg-danger text-white  border-0 ">
                                 Delete
                             </a>
-                            {{--                        <a  href="{{ route('contact.edit',[$contact]) }}" class="text-white bg-secondary p-1 text-decoration-none">--}}
-                            {{--                            Edit--}}
-                            {{--                        </a>--}}
 
                             <a  href="{{ route('contact.show',[$contact]) }}" class="text-white bg-primary p-1 text-decoration-none">
                                 Show

@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
-use App\Models\Image;
+use App\Models\Email;
+use App\Models\Number;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isNull;
 
 class ContactController extends Controller
 {
     use Helper;
+
+    public function __construct()
+    {
+        $this->middleware(['CheckItems'])->only('store');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -40,14 +48,15 @@ class ContactController extends Controller
     {
         $request->validate([
             'name'=>'required|string|min:4|max:150',
-            'phone'=>'string',
+            'number'=>'string',
             'email' => 'email:rfc,dns'
         ]);
         $path=null;
         if ($request->file('image'))
             $path=$request->file('image')->store('images');
 
-        $resp=$this->storeContact($request->name,$path,$request->phone,$request->email);
+        $resp=$this->storeContact($request->name,$path,$request->number,$request->email);
+
         if (count($resp)==0)
             return redirect()->route('home');
         else
