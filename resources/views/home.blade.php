@@ -85,50 +85,75 @@
         var inputname=document.getElementById('searchname')
         var inputnumber=document.getElementById('searchnumber')
         var inputemail=document.getElementById('searchemail')
+        var list=document.getElementById('list')
 
-        inputname.addEventListener('input',function (){
-
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // document.getElementById("demo").innerHTML = this.responseText;
-
-                    console.log(this.response)
-                }
-            };
-            xhttp.open("GET", `api/name?q=${inputname.value}`, true);
+        inputname.addEventListener('input',async function (){
             if (inputname.value!='')
-                xhttp.send();
-
+                await axios.get(`api/name?q=${inputname.value}`).then(({data})=>{
+                    console.log(data);
+                    if (data.length>0) pushElem(data)
+                })
         })
 
-        inputemail.addEventListener('input',function (){
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // document.getElementById("demo").innerHTML = this.responseText;
-
-                    console.log(this.response)
-                }
-            };
-            xhttp.open("GET", `api/email?q=${inputemail.value}`, true);
+        inputemail.addEventListener('input',async function (){
             if (inputemail.value!='')
-                xhttp.send();
+                await axios.get(`api/email?q=${inputemail.value}`).then(({data})=>{
+                    if (data.length>0) pushElem(data)
+                })
         })
 
-        inputnumber.addEventListener('input',function (){
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // document.getElementById("demo").innerHTML = this.responseText;
+        inputnumber.addEventListener('input',async function (){
 
-                    console.log(this.response)
-                }
-            };
-            xhttp.open("GET", `api/number?q=${inputnumber.value}`, true);
             if (inputnumber.value!='')
-                xhttp.send();
+               await axios.get(`api/number?q=${inputnumber.value}`).then(({data})=>{
+                   console.log(data);
+
+                   if (data.length>0) pushElem(data)
+                })
+
         })
+
+        function pushElem(data)
+        {
+            // console.log(data);
+            var str='';
+            list.innerHTML='';
+            data.forEach(function (elem){
+                str+=`<div class="col-md-10 mt-3 shadow  mx-auto">
+                <div class="card mb-3 " >
+                    <div class="row g-0">
+                        <div class="m-3" style="width: 60px;  height: 60px" >
+                            <img  class="w-100 rounded rounded-circle" src="${elem.image!=null?elem.image.name:'/storage/images/noimage.png'}" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h4 class="card-title">${elem.name}</h4>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6 class="card-title small">Emails</h6>`;
+
+                   elem.emails.forEach(function (email){
+                       str+=`<div class="text-muted small">${email.name}</div>`
+                   })
+
+                str+=`</div><div class="col-md-6"><h6 class="card-title small">Phone Numbers</h6>`
+
+                    elem.numbers.forEach(function (number){
+                        str+=`<div class="text-muted small">${ number.name }</div>`
+                    })
+
+
+                str+=`</div></div></div></div></div><div class="position-absolute   text-white  bottom-0 end-0">
+                <a style="cursor: pointer" onclick="submitForm(${ elem.id })"  class="p-1 text-decoration-none  bg-danger text-white  border-0 ">
+                 Delete</a><a  href="contact/${elem.id}" class="text-white bg-primary p-1 text-decoration-none">Show</a>
+                <form id="form${ elem.id }" class="d-none" action="contact/${elem.id} " method="post"  >
+                 <input type="hidden" name="_token" value="0Xluo9sz6ZRIXasvFX9MOK6fMsvkjCFnS5LoNlHN">
+                <input type="hidden" name="_method" value="DELETE"></form></div> </div></div>`
+            })
+
+            list.innerHTML=str;
+        }
 
 
         function submitForm(id) {

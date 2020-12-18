@@ -16,7 +16,7 @@ class NumberResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->when($this->active==true,$this->name)
+            'name'=>$this->when($this->active==true,$this->name,'')
         ];
     }
 }
