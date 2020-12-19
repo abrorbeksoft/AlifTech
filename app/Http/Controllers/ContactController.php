@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
-use App\Models\Email;
-use App\Models\Number;
 use Illuminate\Http\Request;
-use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ContactController extends Controller
 {
@@ -53,7 +52,7 @@ class ContactController extends Controller
         ]);
         $path=null;
         if ($request->file('image'))
-            $path=$request->file('image')->store('images');
+            $path=Storage::putFileAs('images',$request->file('image'),'image'.Str::random(20).'.'.$request->file('image')->extension());
 
         $resp=$this->storeContact($request->name,$path,$request->number,$request->email);
 

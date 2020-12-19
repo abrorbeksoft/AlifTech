@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Models\Image;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ImageController extends Controller
 {
@@ -76,9 +79,9 @@ class ImageController extends Controller
         $request->validate([
             'image'=>'required'
         ]);
-        $contact=Contact::find($id);
-        $path=$request->file('image')->store('images');
 
+        $contact=Contact::find($id);
+        $path=Storage::putFileAs('images',$request->file('image'),'image'.Str::random(20).'.'.$request->file('image')->extension());
         $this->storeImage($contact,$path);
 
         return  redirect()->back();
